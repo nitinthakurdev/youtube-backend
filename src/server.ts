@@ -1,5 +1,9 @@
 import { Elysia } from "elysia";
+import {swagger} from "@elysiajs/swagger";
+import {cors} from "@elysiajs/cors";
 import { UserRoute } from "@/routes/user.routes";
+import { config } from "@/config/env.config";
+import { CreateConnection } from "./config/mongodb.config";
 
 const SERVER_PORT: number = 3000;
 
@@ -11,15 +15,16 @@ export const start = (app: Elysia):void => {
 }
 
 function middlewareHandler(app: Elysia): void {
-
+    app.use(swagger())
+    .use(cors())
 }
 
  async function DbConnections():Promise<void> {
-
+    await CreateConnection(config.MONGODB_URI)
 }
 
 function routesHandler(app: Elysia): void {
-    app.get("/", () => "hii")
+    app.get("/", () => "server is halthy and ok 👍")
         .group('/api/v1', (app) =>
             app.group('/user', (app) => app.use(UserRoute))
         );
