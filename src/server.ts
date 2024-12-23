@@ -1,13 +1,13 @@
 import { Elysia } from "elysia";
-import {swagger} from "@elysiajs/swagger";
-import {cors} from "@elysiajs/cors";
+import { swagger } from "@elysiajs/swagger";
+import { cors } from "@elysiajs/cors";
 import { UserRoute } from "@/routes/user.routes";
 import { config } from "@/config/env.config";
 import { CreateConnection } from "./config/mongodb.config";
 
 const SERVER_PORT: number = 3000;
 
-export const start = (app: Elysia):void => {
+export const start = (app: Elysia): void => {
     DbConnections();
     middlewareHandler(app);
     routesHandler(app);
@@ -16,10 +16,11 @@ export const start = (app: Elysia):void => {
 
 function middlewareHandler(app: Elysia): void {
     app.use(swagger())
-    .use(cors())
+        .use(cors())
+        
 }
 
- async function DbConnections():Promise<void> {
+async function DbConnections(): Promise<void> {
     await CreateConnection(config.MONGODB_URI)
 }
 

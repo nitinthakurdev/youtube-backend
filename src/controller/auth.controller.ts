@@ -1,7 +1,9 @@
 import { createUsers, findByEmail } from "@/services/auth.service";
+import { IRegisterParameter } from "@/types/params.interface";
 import { IRegisterBody } from "@/types/interface";
+import { cookieOptions } from "@/utils/utils";
 
-const CreateUser = async({body,set}:{body:IRegisterBody,set:any}) => {
+const CreateUser = async({body,set,jwt,cookie}:IRegisterParameter) => {
     const findUser:IRegisterBody = await findByEmail(body.email as string);
     if(findUser){
         set.status = 403;
@@ -9,8 +11,13 @@ const CreateUser = async({body,set}:{body:IRegisterBody,set:any}) => {
     };
 
     const result = await createUsers(body);
-    return {message:"user created successful",data:result}
-    
+    const token = await jwt.sign({email:result.email})
+    cookie.auth.set({
+        value:token,
+        ...cookieOptions
+    })
+    set.status = 201
+    return {message:"user created successful",data:result,token} 
 }
 
 export {CreateUser}
