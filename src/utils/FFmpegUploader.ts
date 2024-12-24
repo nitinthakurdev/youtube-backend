@@ -17,7 +17,7 @@ import {exec} from "child_process";
 
  return  exec(FFmpegCommand,(error,stdout,stderr)=>{
         if(error){
-            console.log(error)
+            console.log("ffmpeg error",error)
         }
         console.log(`std error ${stderr}`)
         return stdout

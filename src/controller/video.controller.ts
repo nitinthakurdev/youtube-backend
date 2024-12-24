@@ -5,5 +5,5 @@ export const createVideo= async ({body, headers, set }: {body:{file:File}, heade
   const {file}  = body;
   const filePath = await LocalImageUploader(file) as string
   const ffmpeg  =  FFmpegUploader(filePath) 
-  return ffmpeg
+  return {ffmpeg}
 };
